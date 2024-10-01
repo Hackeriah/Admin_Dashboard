@@ -1,8 +1,9 @@
 .container{
     position: sticky;
-    top: 40px;
+    top: 20px;
     list-style: none;
-    /* height: 100vh; */
+    /* min-height: 100vh; */
+    margin: 0;
 }
 
 .user{

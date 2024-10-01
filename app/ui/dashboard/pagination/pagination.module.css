@@ -1,0 +1,18 @@
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.button{
+    width:max-content;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 2px;
+    color: black;
+    font-weight: bold;
+}
+
+.button:disabled{
+    cursor: not-allowed;
+}
+

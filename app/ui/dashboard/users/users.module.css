@@ -1,0 +1,76 @@
+.container{
+   background-color: var(--bgSoft);
+   padding: 20px;
+   border-radius: 10px;
+   margin-top: 20px;
+}
+
+.top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.addButton{
+    padding: 10px;
+    background-color:#5d57c9;
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.addButton:hover{
+    background-color:#373473;
+}
+
+.table{
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+.table th, .table td{
+    padding: 12px 15px;
+    text-align: left;
+    color: var(--text);
+}
+.user{
+    gap: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.userImage{
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.buttons{
+    display: flex;
+    gap: 10px;
+}
+.button{
+    width:max-content;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+.viewButton{
+    background-color: teal; 
+}
+.viewButton:hover{
+    background-color: rgb(14, 84, 65);
+}
+
+.deleteButton{
+    background-color: crimson;
+    
+}
+.deleteButton:hover{
+    background-color: rgb(84, 5, 5);
+}
+
+
+
