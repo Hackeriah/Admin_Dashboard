@@ -3,15 +3,19 @@ import Search from "@/app/ui/dashboard/search/search";
 import Link from "next/link";
 import Image from "next/image";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
-export default function UsersPage() {
-  const placeholder = 'Search for a user...'
+import { User } from "@/app/lib/models";
+import { FetchUsers } from "@/app/lib/data";
+const UsersPage = async () => {
+  const users = await FetchUsers();
+  console.log(users);
+  const placeholder = "Search for a user...";
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder={placeholder}/>
+        <Search placeholder={placeholder} />
         <Link href="/dashboard/users/add">
-        <button className={styles.addButton}>Add User</button></Link>
-        
+          <button className={styles.addButton}>Add User</button>
+        </Link>
       </div>
       <table className={styles.table}>
         <thead>
@@ -25,36 +29,46 @@ export default function UsersPage() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div className={styles.user}><Image src="/noavatar.png" alt="" height={40} width={40} className={styles.userImage} /> Isaiah</div></td>
-            <td>Isaiah@gmail.com</td>
-            <td>Oct 1 2024</td>
-            <td>Client</td>
-            <td>Passive</td>
-            <td className={styles.buttons}>
-             <Link href='/dashboard/users/test'><button className={`${styles.button} ${styles.viewButton}`}>View</button></Link>
-             <Link href={'/'}><button className={`${styles.button} ${styles.deleteButton}`}>Delete</button></Link>
+          {users.map((user) => (
+            
+          <tr key={user.img}>
+            <td>
+              <div className={styles.user}>
+                <Image
+                  src={user.img}
+                  alt=""
+                  height={40}
+                  width={40}
+                  className={styles.userImage}
+                />{" "}
+                {user.name}
+              </div>
             </td>
-
-          </tr>
-
-
-
-          <tr>
-            <td><div className={styles.user}><Image src="/noavatar.png" alt="" height={40} width={40} className={styles.userImage} />Jane</div></td>
-            <td>jane@gmail.com</td>
-            <td>Oct 1 2024</td>
-            <td>Client</td>
-            <td>Passive</td>
+            <td>{user.email}</td>
+            <td>{user.createdAt?.toString().slice(0,16)}</td>
+            <td>{user.isAdmin ? "Admin": "Client"}</td>
+            <td>{user.isActive ? "Active": "Passive"}</td>
             <td className={styles.buttons}>
-             <Link href='/dashboard/users/test'><button className={`${styles.button} ${styles.viewButton}`}>View</button></Link>
-             <Link href={'/'}><button className={`${styles.button} ${styles.deleteButton}`}>Delete</button></Link>
+              <Link href={`/dashboard/users/${user.id}`}>
+                <button className={`${styles.button} ${styles.viewButton}`}>
+                  View
+                </button>
+              </Link>
+              <Link href={"/"}>
+                <button className={`${styles.button} ${styles.deleteButton}`}>
+                  Delete
+                </button>
+              </Link>
             </td>
-
           </tr>
+          
+          ))}
         </tbody>
       </table>
-      <Pagination/>
+      <Pagination />
     </div>
   );
-}
+};
+export default UsersPage;
+
+
