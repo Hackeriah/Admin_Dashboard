@@ -1,5 +1,8 @@
+'use client'
+import { useEffect } from "react";
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import {
   MdDashboard,
@@ -15,6 +18,21 @@ import {
 } from "react-icons/md";
 
 export default function Sidebar() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem('authenticated');
+    if (authStatus !== 'true') {
+      router.push('/login'); 
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('authenticated');
+    router.push('/login'); 
+  };  
+
   const menuItems = [
     {
       title: "Pages",
@@ -26,7 +44,7 @@ export default function Sidebar() {
         },
         {
           title: "Users",
-          path: "/dashboard/users",
+          path: "/",
           icon: <MdSupervisedUserCircle />,
         },
         {
@@ -102,7 +120,7 @@ export default function Sidebar() {
       </ul>
       <div className={styles.logout}>
         <MdLogout/>
-        <button >Log Out</button>
+        <button onClick={handleLogout} >Log Out</button>
       </div>
     </div>
   );
