@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import styles from '@/app/ui/login/login.module.css';
 
 export default function LoginPage() {
+  const [message,setMessage] = useState=('')
   const [authenticated, setAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -27,13 +28,14 @@ export default function LoginPage() {
       localStorage.setItem('authenticated', 'true'); 
       router.push('/dashboard'); 
     } else {
-      alert('Invalid credentials. Please try again.');
+      setMessage('Invalid credentials. Please try again.')
     }
   };
 
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={authenticate}>
+        <p style={{textAlign:"center",color:'red'}}>{message}</p>
         <h1>LOGIN HERE</h1>
         <input
           type="text"
