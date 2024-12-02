@@ -2,11 +2,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '@/app/ui/login/login.module.css';
+import { login } from '@/app/lib/api'; // Import the login function from api.js
 
 export default function LoginPage() {
   const [message, setMessage] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState(''); // Use email instead of username
   const [password, setPassword] = useState('');
   const router = useRouter();
 
@@ -17,7 +18,7 @@ export default function LoginPage() {
     // Clear the authentication state
     localStorage.removeItem('authenticated');
     setAuthenticated(false);
-    router.push('/login');  // Redirect to the login page
+    router.push('/login'); // Redirect to the login page
   }, [router]);
 
   const resetTimer = useCallback(() => {
@@ -26,8 +27,8 @@ export default function LoginPage() {
 
     // Set a new timer for 10 minutes (600000 ms)
     inactivityTimeout = setTimeout(() => {
-      logout();  // Logout after 10 minutes of inactivity
-    }, 600000); // 300000 ms = 5 minutes
+      logout(); // Logout after 10 minutes of inactivity
+    }, 600000); // 10 minutes
   }, [logout]);
 
   useEffect(() => {
@@ -43,7 +44,6 @@ export default function LoginPage() {
     window.addEventListener('keypress', resetTimer);
     window.addEventListener('click', resetTimer);
 
-    // Clean up the event listeners on component unmount
     return () => {
       window.removeEventListener('mousemove', resetTimer);
       window.removeEventListener('keypress', resetTimer);
@@ -52,16 +52,19 @@ export default function LoginPage() {
     };
   }, [resetTimer, router]);
 
-  const authenticate = (e) => {
+  const authenticate = async (e) => {
     e.preventDefault();
+    try {
+      // Call the login API from api.js
+      const response = await login(email, password);
 
-    // Check for valid credentials
-    if (username === 'admin' && password === 'admin') {
+      // If login is successful, set authenticated and store it in localStorage
       setAuthenticated(true);
-      localStorage.setItem('authenticated', 'true');  // Store authentication status
-      router.push('/dashboard');  // Redirect to the dashboard
-    } else {
-      setMessage('Invalid credentials. Please try again.');
+      localStorage.setItem('authenticated', 'true');  
+      setMessage('Login successful! Redirecting...');
+      router.push('/dashboard'); // Redirect to dashboard after successful login
+    } catch (error) {
+      setMessage(error.message || 'Invalid credentials. Please try again.');
     }
   };
 
@@ -71,11 +74,11 @@ export default function LoginPage() {
         <p style={{ textAlign: "center", color: 'red' }}>{message}</p>
         <h1>LOGIN HERE</h1>
         <input
-          type="text"
-          name="username"
-          placeholder="Enter Username.."
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          name="email"
+          placeholder="Enter Email..."
+          value={email}
+          onChange={(e) => setEmail(e.target.value)} // Update with email
         />
         <input
           type="password"
